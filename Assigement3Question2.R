@@ -1,74 +1,58 @@
+#####implementing the real vallues of the function 
+#####Importint the data 
+library("e1071")
+
+HousingDataFun <- function(Knodes)
+{
 housing_data1= read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data")
+housing_data1
 colnames(housing_data1) = c("CRIM","ZN","INDUS","CHAS","NOX","RM","AGE","DIS","RAD","TAX","PTRATIO","B","LSTAT","MEDV")
+(as.data.frame.matrix(housing_data1))
 housing_data1
-
-length(housing_data1)
+rowsinds1=nrow(housing_data1)
+rowsinds1
+housing_data1$ID <- seq.int(nrow(housing_data1))
 housing_data1
-names(housing_data1)
-tempsub1=housing_data1[1:11,]
+final_result =0
 
-#df1[!(df1$name %in% df2$name),]
-tempsub2=housing_data1-tempsub1  
-
-df2 <-matrix(1:6,ncol=2,byrow=TRUE)
-df1 <-matrix(1:10,ncol=2,byrow=TRUE)
-
-data.frame(v1=setdiff(df1[,1], df2[,1]), v2=setdiff(df1[,2], df2[,2]))
-
-
-
-
-
-
-
-
-
-housing_data1[1]
-housing_data1[1:14]
-subset(housing_data1,y>1 & y<100)
-
-
-as.data.frame.matrix(housing_data1)
-housing_data1
-label=housing_data1[14]
-label
-fetures=housing_data1[-14]
-fetures
-#head(housing_data1,100)
-trainX=fetures[1:100,]
-trainY=fetures[100:500,]
-trainX
-trainY
-nrow(housing_data1)
-
-#####For loop
-for(i in 1:nrow(housing_data1))
+for(i in 1:Knodes)
 {
-  
-  a = i 
-  b = i + 5
-  i = i + 5
-  trainx = testx[a:b,]
-  trainy = testx[a:b,] 
-  newmod <- new_model(trainx, testx, trainy, testy, 5, a, b)
-  newmod
-  
+temp1=rowsinds1/Knodes
+temp2 = ceiling(temp1)
+temp2
+rand1=sample(1:rowsinds1,temp2)
+Trainingdata1=housing_data1[! (housing_data1$ID %in% rand1),]
+TrainindDatawithoutID= Trainingdata1[,-15]
+#print(TrainindDatawithoutID)
+TestigData=housing_data1[(housing_data1$ID %in% rand1),]
+TrainingDataFeatures = Trainingdata1[,-14:-15]
+TrainingDataLabel= Trainingdata1[14]
+TestingDataFeatures=TestigData[,-14:-15]
+TestigDataLables=TestigData[14]
+#print(TrainingDataFeatures)
+#print(TrainingDataLabel)
+#print(TestingDataFeatures)
+#print(TestigDataLables)
+#svm_tune <- tune(svm, train.x=x, train.y=y, kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
+svm_tune <- tune(svm, train.x=TrainingDataFeatures, train.y=TrainingDataLabel, kernel="radial", ranges=list(cost=10^(-1:3), gamma=c(.5,1,2,10)))
+#print(svm_tune)
+svm_model_aftertune = svm(MEDV ~. ,data = TrainindDatawithoutID,kernel="radial",cost=10,gamma=0.5)
+#print(summary(svm_model_aftertune))
+#print(svm_model_aftertune)
+predictFeatures = predict(svm_model_aftertune,TestingDataFeatures)
+#print(predictFeatures)
+###Calicuating the mse
+result = ((sum((predictFeatures-TestigDataLables)^2))/temp2)
+#result = (((predictFeatures-TestigDataLables)^2)/temp2)
+#print(result)
+#print("hellwo")
+final_result = final_result+result
+#print(final_result)
+
 }
-
-
-
-
-######End of the function 
-
-splitfun <- function(Trainx)
-{
-  trainsplit1=Trainx[1:400,]
-  testsplit1=Trainx[400:500,]
-  trainsplit2=Trainx[200:500,]
-  testsplit2=Trainx[1:100,]
-  return(trainsplit1)
-  
+print(final_result)
+crossvalidatioerror = (final_result/Knodes)
+print(crossvalidatioerror)
 }
-
-resfun1 <- splitfun(fetures)
-resfun1
+resultant <- HousingDataFun(5)
+print(resultant)
