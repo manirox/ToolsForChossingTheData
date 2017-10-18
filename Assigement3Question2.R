@@ -4,8 +4,10 @@ library("e1071")
 
 HousingDataFun <- function(Knodes)
 {
+##importing the data set 
 housing_data1= read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data")
 housing_data1
+#setting the column names 
 colnames(housing_data1) = c("CRIM","ZN","INDUS","CHAS","NOX","RM","AGE","DIS","RAD","TAX","PTRATIO","B","LSTAT","MEDV")
 (as.data.frame.matrix(housing_data1))
 housing_data1
@@ -29,6 +31,12 @@ TrainingDataFeatures = Trainingdata1[,-14:-15]
 TrainingDataLabel= Trainingdata1[14]
 TestingDataFeatures=TestigData[,-14:-15]
 TestigDataLables=TestigData[14]
+Traindatafile=paste(i,"Trainfilename.csv",sep = "")
+print(Traindatafile)
+write.csv(Trainingdata1, file = Traindatafile,row.names=FALSE)
+Testingdatafile=paste(i,"Testingdata.csv",sep = "")
+print(Testingdatafile)
+write.csv(TestigData, file = Testingdatafile,row.names=FALSE)
 #print(TrainingDataFeatures)
 #print(TrainingDataLabel)
 #print(TestingDataFeatures)
