@@ -15,9 +15,9 @@ print(pargrid)
 List1= NULL
 CaliculatingMinVal  <- function(List1,List2,List3)
 {
-  df <- data.frame(matrix(unlist(List1), nrow = nrow(pargrid), byrow  = TRUE))
-  df2 <- data.frame(matrix(unlist(List2), nrow = nrow(pargrid), byrow = TRUE))
-  df3 <- data.frame(matrix(unlist(List3), nrow = nrow(pargrid), byrow = TRUE))
+  df <- data.frame(matrix(unlist(List1), nrow = nrow(pargrid), byrow  = FALSE))
+  df2 <- data.frame(matrix(unlist(List2), nrow = nrow(pargrid), byrow = FALSE))
+  df3 <- data.frame(matrix(unlist(List3), nrow = nrow(pargrid), byrow = FALSE))
   df_combined =data.frame(df2,df3,df)
   print(df_combined)
   resultmeanval=rowMeans(df_combined[,-1:-2])
@@ -47,7 +47,7 @@ RetrningBestPargrid <- function()
 { 
   for(j in 1:5)
   {
-
+    
     trainIdx=sample(nrow(housing_data_import1),0.75*nrow(housing_data_import1),replace = FALSE)
     testIdx = setdiff(seq(1, nrow(housing_data_import1)), trainIdx)
     train1 <- housing_data_import1[trainIdx, ]
@@ -76,10 +76,16 @@ RetrningBestPargrid <- function()
       
       
     }
-   
+    
     WiteToAfile(j,train1,test1)
+    print(List2)
+    print(List3)
+    print(List1)
+    
   }
+ 
   CaliculatingMinVal(List1,List2,List3)
+  
   
 }
 
