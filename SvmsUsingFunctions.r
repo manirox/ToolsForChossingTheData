@@ -66,8 +66,8 @@ RetrningBestPargrid <- function()
       svm_model_aftertune = svm(MEDV ~. ,data = train1,kernel="radial",cost=cost,gamma=gama)
       
       
-      predictFeatures = predict(svm_model_aftertune,test1[,-14])
-      result = ((sum((predictFeatures-test1[14])^2))/nrow(test1))
+      predictFeatures = predict(svm_model_aftertune,train1[,-14])
+      result = ((sum((predictFeatures-test1[14])^2))/nrow(train1))
       
       List1[[length(List1)+1]] = result
       List2[[length(List2)+1]] = cost
