@@ -1,4 +1,5 @@
 rm(list=ls())
+library(ggplot2)
 warnings()
 library("e1071")
 set.seed(123)
@@ -35,12 +36,8 @@ CaliculatingMinVal  <- function(List1,List2,List3)
   #print(List1)
   print(df_resultvalue[,1])
   print(df_resultvalue[,8])
-  ConvCol1=c(df_resultvalue[,1])
-  ConvCol2=c(df_resultvalue[,8])
-  print("Changing to col")
-  print(ConvCol1)
-  print(ConvCol2)
-  plot(ConvCol1,ConvCol2)
+  #Plotting the graphs 
+  ResultatnGraphs(df_resultvalue)
   
   #hist(ConvCol2,xlab = "Cost",ylab = "Avg_Cv_Error",main = "Graph for the average of cos and avg error",par(mar=c(1,1,1,1)))
 }
@@ -108,9 +105,18 @@ RetrningBestPargrid <- function()
   CaliculatingMinVal(List1,List2,List3)
   
 }
-
+##Plotting the graphs 
+ResultatnGraphs <- function(df_resultvalue)
+{
+  qplot(df_resultvalue[,1],df_resultvalue[,8],data = df_resultvalue,xlab ="Cos",ylab = "MeanCvError",color =  df_resultvalue[,1])
+  qplot(df_resultvalue[,2],df_resultvalue[,8],data = df_resultvalue,xlab ="Gama",ylab = "MeanCvError",color =  df_resultvalue[,2])
+  qplot(df_resultvalue[,1],df_resultvalue[,8],data = df_resultvalue,xlab ="Cos",ylab = "MeanCvError",facets = .~df_resultvalue[,8])
+  
+}
 
 RetrningBestPargrid()
 
 print(List1)
+
+
 
